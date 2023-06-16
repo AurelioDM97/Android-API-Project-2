@@ -2,52 +2,33 @@ package com.example.myownapiapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.View
-import android.widget.Toast
-import androidx.lifecycle.lifecycleScope
-import com.example.myownapiapp.api.CatDataJson
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.myownapiapp.databinding.ActivityMainBinding
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.await
-import retrofit2.awaitResponse
-import retrofit2.converter.gson.GsonConverterFactory
-
-
+import com.example.myownapiapp.model.CatFactsViewModel
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var viewModel: CatFactsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        getCatFacts()
+        viewModel = ViewModelProvider(this)[CatFactsViewModel::class.java]
 
-        binding.generateButton.setOnClickListener {
-            getCatFacts()
+        viewModel.catFact.observe(this) { catFacts ->
+            binding.mainText.text = catFacts
         }
-    }
 
-    private fun getCatFacts() {
-        lifecycleScope.launch {
-            try {
-                val response = RetrofitIstance.apiInterface.getCatFacts()
-                binding.mainText.text = response.text
-            } catch (e: Exception) {
-                Toast.makeText(this@MainActivity, "Something went wrong...", Toast.LENGTH_SHORT).show()
-            }
+        binding.generateButton.setOnClickListener() {
+            viewModel.getCatFacts()
         }
     }
 }
+
+
 
 
