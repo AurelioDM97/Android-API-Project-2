@@ -1,13 +1,11 @@
-package com.example.myownapiapp
+package com.example.myownapiapp.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.myownapiapp.databinding.ActivityMainBinding
-import com.example.myownapiapp.model.CatFactsViewModel
 
-class MainActivity : AppCompatActivity() {
+class CatsRandomFacts : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: CatFactsViewModel
